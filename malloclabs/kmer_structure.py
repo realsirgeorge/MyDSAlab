@@ -92,7 +92,7 @@ class KmerStore:
             if kmer in kmers:
                 self.frequency[kmer] -= 1
                 if self.frequency[kmer] == 0:
-                    del self.frequency[kmer]
+                    self.frequency[kmer] = None 
             else:
                 new_kmers.append(kmer)
         self.kmers = new_kmers
@@ -105,7 +105,8 @@ class KmerStore:
         """
         result = []
         for i in range(self.kmers.get_size()):
-            if self.frequency.get_at(i) >= m:
+            freq = self.frequency.get_at(i)
+            if freq is not None and freq >= m:
                 result.append(self.kmers.get_at(i))
         return result
 
