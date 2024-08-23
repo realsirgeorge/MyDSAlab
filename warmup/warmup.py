@@ -29,6 +29,8 @@ You may wish to import your data structures to help you with some of the
 problems. Or maybe not. We did it for you just in case.
 """
 from structures.dynamic_array import DynamicArray
+from structures.linked_list import  Node
+
 def hash_function(x, size):
     """Simple hash function to map an integer to an index."""
     return x % size
@@ -236,6 +238,7 @@ def number_game(numbers: list[int]) -> tuple[str, int]:
     else:
         return ("Tie", alice_score)
 
+
 def merge_sort(arr):
     if len(arr) > 1:
         mid = len(arr) // 2
@@ -281,13 +284,17 @@ def road_illumination(road_length: int, poles: list[int]) -> float:
     road_illumination(15, [15, 5, 3, 7, 9, 14, 0]) == 2.5
     road_illumination(5, [2, 5]) == 2.0
     """
+
     # YOUR CODE GOES HERE
     poles = merge_sort(poles)
+    
     # Step 2: Calculate the maximum gap between consecutive poles
     max_gap = 0
     for i in range(1, len(poles)):
         gap = poles[i] - poles[i - 1]
         max_gap = max(max_gap, gap)
+    
     # Step 3: Consider the ends of the road
     max_gap = max(max_gap / 2.0, poles[0], road_length - poles[-1])
+    
     return max_gap
