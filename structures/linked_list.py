@@ -3,16 +3,12 @@ Skeleton for COMP3506/7505 A1, S2, 2024
 The University of Queensland
 Joel Mackenzie and Vladimir Morozov
 """
-# so we can hint Node get_next
 from __future__ import annotations
-
 from typing import Any, Optional
-
 class Node:
     """
     A simple type to hold data and a next pointer
     """
-
     def __init__(self, data: Any) -> None:
         self._data = data  # This is the payload data of the node
         self._next = None  # This is the "next" pointer to the next Node
@@ -36,7 +32,6 @@ class Node:
     def get_prev(self) -> Node | None:
         return self._prev
 
-
 class DoublyLinkedList:
     """
     Your doubly linked list code goes here.
@@ -51,9 +46,6 @@ class DoublyLinkedList:
         self.tail: Optional[Node] = None
         self.size: int = 0
         self.is_reversed: bool = False  # Initialize the is_reversed attribute
-
-        # You probably need to track some data here...
-        
 
     def __str__(self) -> str:
         """
@@ -132,38 +124,38 @@ class DoublyLinkedList:
         the given data.
         Time complexity for full marks: O(1)
         """
-        if self.is_reversed:
-            self.insert_to_back(data)
-        else:
+        # if self.is_reversed:
+        #     self.insert_to_back(data)
+        # else:
             # Original implementation for inserting at the front
-            new_node = Node(data)
-            if self.head is None:
+        new_node = Node(data)
+        if self.head is None:
                 self.head = new_node
                 self.tail = new_node
-            else:
+        else:
                 new_node.set_next(self.head)
                 self.head.set_prev(new_node)
                 self.head = new_node
-            self.size += 1
+        self.size += 1
 
     def insert_to_back(self, data: Any) -> None:
         """
         Insert the given data (in a node) to the back of the list
         Time complexity for full marks: O(1)
         """
-        if self.is_reversed:
-            self.insert_to_front(data)
-        else:
+        # if self.is_reversed:
+        #     self.insert_to_front(data)
+        # else:
             # Original implementation for inserting at the back
-            new_node = Node(data)
-            if self.tail is None:
+        new_node = Node(data)
+        if self.tail is None:
                 self.head = new_node
                 self.tail = new_node
-            else:
+        else:
                 new_node.set_prev(self.tail)
                 self.tail.set_next(new_node)
                 self.tail = new_node
-            self.size += 1
+        self.size += 1
 
     def remove_from_front(self) -> Any | None:
         """
