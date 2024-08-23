@@ -1,0 +1,43 @@
+----
+NOTE: This file is not mandatory for COMP3506 students, but we do encourage
+you to have a go at these questions anyway. COMP7505 students, this component
+is worth 2 marks, so your total A1 is worth 17 marks.
+----
+
+Question 1: Briefly describe, in two or three sentences, how your data
+structure works, including any variables or data maintained internally.
+This should take about four sentences.
+
+Answer:
+The KmerStore data structure utilizes a DynamicArray to store k-mers, which are substrings of a specified length (k) extracted from DNA sequences. 
+Internally, it maintains a dictionary to track the frequency of each k-mer, allowing efficient insertion, deletion, and querying operations. 
+The DynamicArray provides dynamic resizing capabilities, while the dictionary enables fast lookups and updates, ensuring that the data structure remains efficient even with large datasets.
+
+----
+
+Question 2: What is the worst-case time complexity for supporting the
+`countgeq` query, and does this differ to the worst-case time complexity
+for the `count` query? If so, how? Explain.
+This should take about five sentences.
+
+Answer
+
+The worst-case time complexity for the countgeq query is O(n), where n is the number of distinct k-mers in the data structure. 
+This is because, in the current implementation, the countgeq query needs to iterate through all the k-mers to determine which are lexicographically greater than or equal to the given k-mer. 
+In contrast, the count query has a worst-case time complexity of O(1) because it performs a direct lookup in the dictionary to retrieve the frequency of a specific k-mer. 
+Therefore, the countgeq query is less efficient than the count query in the worst case, as it requires scanning all k-mers rather than performing a simple lookup.
+
+----
+
+Question 3: What is the worst-case time complexity for supporting the
+`compatible` query type? Explain how the query is solved along with your
+analysis.
+This should take about five sentences. Your analysis can be in plain English.
+
+The worst-case time complexity for supporting the compatible query is O(n), where n is the number of distinct k-mers in the data structure. 
+The compatible query checks the last two characters of the input k-mer and finds all k-mers in the data structure that start with the complementary pair. 
+In the current implementation, this involves iterating through all stored k-mers to compare their prefixes with the complementary pair derived from the input k-mer. 
+Since this requires scanning each k-mer in the data structure, the time complexity is O(n). 
+However, if the data structure were optimized (e.g., using a prefix-based indexing mechanism), the complexity could potentially be reduced.
+
+---
