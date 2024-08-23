@@ -29,7 +29,7 @@ You may wish to import your data structures to help you with some of the
 problems. Or maybe not. We did it for you just in case.
 """
 from structures.dynamic_array import DynamicArray
-from structures.linked_list import  Node
+from structures.linked_list import DoublyLinkedList, Node
 
 def hash_function(x, size):
     """Simple hash function to map an integer to an index."""
@@ -58,7 +58,7 @@ def main_character(instring: list[int]) -> int:
     main_character([60000, 120000, 654321, 999, 1337, 133731337]) == -1
     """
     # DynamicArray to act as our hash map
-    size = 5000000  # This size can be adjusted for better performance
+    size = 1000000  # This size can be adjusted for better performance
     hash_map = DynamicArray()
     for _ in range(size):
         hash_map.append(None)  # Initialize with None (meaning no element has been seen)
@@ -116,10 +116,10 @@ def missing_odds(inputs: list[int]) -> int:
 
     if not inputs:
             return 0
-        
+
     min_value = min(inputs)
     max_value = max(inputs)
-        
+
         # Use a set to track the numbers present in the input list
     input_set = set(inputs)
 
