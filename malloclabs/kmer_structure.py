@@ -16,7 +16,6 @@ problems. Or maybe not.
 from structures.dynamic_array import DynamicArray
 #from structures.linked_list import DoublyLinkedList, Node
 
-
 class KmerStore:
     """
     A data structure for maintaining and querying k-mers.
@@ -24,14 +23,28 @@ class KmerStore:
     as you see fit.
     At any moment, the structure is maintaining n distinct k-mers.
     """
-
     def __init__(self, k: int) -> None:
         self.k = k
         self.kmers = DynamicArray()  # Using DynamicArray to store k-mers
         self.frequency = DynamicArray()  # Parallel array to store frequencies
-        self.prefix_count = {}  # Dictionary to keep track of prefix counts
+        self.prefix_count = DynamicArray()
 
+        # Initialize the prefix_count array with 16 elements, all set to 0
+        for _ in range(16):
+            self.prefix_count.append(0)
 
+    def _encode_prefix(self, prefix: str) -> int:
+        """Encode the two-character prefix into an integer index."""
+        def char_to_index(char: str) -> int:
+            if char == 'A':
+                return 0
+            elif char == 'C':
+                return 1
+            elif char == 'G':
+                return 2
+            elif char == 'T':
+                return 3
+        return char_to_index(prefix[0]) * 4 + char_to_index(prefix[1])
 
     def read(self, infile: str) -> None:
         """
@@ -52,17 +65,15 @@ class KmerStore:
         """
         """ Insert kmer into the sorted DynamicArray and maintain frequency. """
         index = self._binary_search_insert_position(kmer)
-
         if index < self.kmers.get_size() and self.kmers.get_at(index) == kmer:
             self.frequency.set_at(index, self.frequency.get_at(index) + 1)
         else:
             self._insert_at_position(index, kmer)
 
+        # Track the first two characters (prefix)
         prefix = kmer[:2]
-        if prefix in self.prefix_count:
-            self.prefix_count[prefix] += 1
-        else:
-            self.prefix_count[prefix] = 1
+        prefix_index = self._encode_prefix(prefix)
+        self.prefix_count.set_at(prefix_index, self.prefix_count.get_at(prefix_index) + 1)
 
     def batch_insert(self, kmers: list[str]) -> None:
         """
@@ -168,7 +179,11 @@ class KmerStore:
         Time complexity for full marks: O(1) :-)
         """
         last_two = kmer[-2:]
-        complement_map = {"A": "T", "T": "A", "C": "G", "G": "C"}
-        first_two_complement = complement_map[last_two[0]] + complement_map[last_two[1]]
-        return self.prefix_count.get(first_two_complement, 0)
-    # Any other functionality you may need
+        complement_map = ["T", "A", "G", "C"]  # Corresponds to A->T, C->G, G->C, T->A
+        first_two_complement = complement_map[ord(last_two[0]) % 4] + complement_map[ord(last_two[1]) % 4]
+
+        # Calculate the index for the complementary prefix
+        complement_index = self._encode_prefix(first_two_complement)
+        
+        # Return the count directly from the DynamicArray
+        return self.prefix_count.get_at(complement_index)
