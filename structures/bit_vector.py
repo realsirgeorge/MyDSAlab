@@ -3,19 +3,14 @@ Skeleton for COMP3506/7505 A1, S2, 2024
 The University of Queensland
 Joel Mackenzie and Vladimir Morozov
 """
-
 from typing import Any
-
 from structures.dynamic_array import DynamicArray
-
-
 class BitVector:
     """
     A compact storage for bits that uses DynamicArray under the hood.
     Each element stores up to 64 bits, making BitVector 64 times more memory-efficient
     for storing bits than plain DynamicArray.
     """
-
     BITS_PER_ELEMENT = 64
 
     def __init__(self) -> None:
@@ -27,9 +22,6 @@ class BitVector:
         self._start_index = 0  # Initialize the start index for logical indexing
         self._flipped = False  # Flag to indicate if the bits are logically flipped
         self._reversed = False  # Flag to indicate if the vector is logically reversed
-
-
-        # you may want or need more stuff here in the constructor
 
     def __str__(self) -> str:
         """
@@ -50,7 +42,6 @@ class BitVector:
         while self._data.get_size() < required_size:
             self._data.append(0)  # Initialize with 0 to avoid NoneType errors
     
-
     def get_at(self, index: int) -> int | None:
         """
         Get bit at the given index.
@@ -59,23 +50,16 @@ class BitVector:
         """
         if index < 0 or index >= self._size:
             return None
-
         # Adjust the index based on whether the vector is reversed
         if self._reversed:
             index = self._size - 1 - index
-
         # Calculate the logical index taking the start index into account
         logical_index = (self._start_index + index) % (self.BITS_PER_ELEMENT * self._data.get_size())
-
         element_index = logical_index // self.BITS_PER_ELEMENT
         bit_index = logical_index % self.BITS_PER_ELEMENT
-
         bit_value = (self._data[element_index] >> bit_index) & 1
-
         # If the vector is logically flipped, invert the bit value
         return bit_value ^ self._flipped
-
-
 
     def __getitem__(self, index: int) -> int | None:
         """
@@ -83,7 +67,6 @@ class BitVector:
         Allows to use square brackets to index elements.
         """
         return self.get_at(index)
-
 
     def set_at(self, index: int) -> None:
         """
@@ -122,11 +105,9 @@ class BitVector:
         # Adjust the index based on whether the vector is reversed
         if self._reversed:
             index = self._size - 1 - index
-
         logical_index = (self._start_index + index) % (self.BITS_PER_ELEMENT * self._data.get_size())
         element_index = logical_index // self.BITS_PER_ELEMENT
         bit_index = logical_index % self.BITS_PER_ELEMENT
-
         if self._flipped:
             # If the vector is logically flipped, we need to set the bit
             self._data[element_index] |= (1 << bit_index)
@@ -168,17 +149,13 @@ class BitVector:
         """
         # Increase size of the bit vector
         self._size += 1
-        
         # Ensure the bit vector has enough capacity
         self._ensure_capacity(self._size - 1)
-
         # Adjust the logical start position by moving it left
         # If _start_index goes below 0, wrap it around using modulo operation
         self._start_index = (self._start_index - 1) % (self.BITS_PER_ELEMENT * self._data.get_size())
-        
         # Set the first element in the logical bit vector to the new state
         self.__setitem__(0, state)
-        print(self._data)
 
     def reverse(self) -> None:
         """
@@ -187,14 +164,12 @@ class BitVector:
         """
         self._reversed = not self._reversed
 
-
     def flip_all_bits(self) -> None:
         """
         Flip all bits in the vector.
         Time complexity for full marks: O(1)
         """
         self._flipped = not self._flipped
-
 
     def shift(self, dist: int) -> None:
         """
@@ -221,8 +196,6 @@ class BitVector:
                 else:
                     self.__setitem__(i, 0)  # Fill with 0s
 
-
-
     def rotate(self, dist: int) -> None:
         """
         Make a bit rotation.
@@ -240,13 +213,11 @@ class BitVector:
         def get_bit_vector() -> str:
             return ''.join(str(self.get_at(i)) for i in range(self._size))
 
-
         # Perform the rotation by shifting twice: once for the initial rotation, and once to correct the remaining bits
         rotated_bits = [self.get_at((i - dist) % self._size) for i in range(self._size)]
         
         for i in range(self._size):
             self.__setitem__(i, rotated_bits[i])
-
 
     def get_size(self) -> int:
         """
