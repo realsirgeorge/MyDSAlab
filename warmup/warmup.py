@@ -28,10 +28,7 @@ There will be hidden tests in each category that will be published only after th
 You may wish to import your data structures to help you with some of the
 problems. Or maybe not. We did it for you just in case.
 """
-from structures.bit_vector import BitVector
 from structures.dynamic_array import DynamicArray
-from structures.linked_list import DoublyLinkedList, Node
-
 def hash_function(x, size):
     """Simple hash function to map an integer to an index."""
     return x % size
@@ -59,7 +56,7 @@ def main_character(instring: list[int]) -> int:
     main_character([60000, 120000, 654321, 999, 1337, 133731337]) == -1
     """
     # DynamicArray to act as our hash map
-    size = 10000  # This size can be adjusted for better performance
+    size = 5000000  # This size can be adjusted for better performance
     hash_map = DynamicArray()
     for _ in range(size):
         hash_map.append(None)  # Initialize with None (meaning no element has been seen)
@@ -115,31 +112,19 @@ def missing_odds(inputs: list[int]) -> int:
     missing_odds([4, 1, 8, 5]) == 10    # 3 and 7 are missing
     """
 
-    # YOUR CODE GOES HERE
     if not inputs:
-        return 0
-    
+            return 0
+        
     min_value = min(inputs)
     max_value = max(inputs)
-    
-    # Initialize the DynamicArray to track which numbers are present
-    dynamic_array_size = max_value - min_value + 1
-    dynamic_array = DynamicArray()
-    
-    # Initialize the dynamic array with 0s (indicating that the number is not yet seen)
-    for _ in range(dynamic_array_size):
-        dynamic_array.append(0)
-    
-    # Mark existing numbers in the DynamicArray
-    for num in inputs:
-        dynamic_array[num - min_value] = 1
-    
-    # Sum the missing odd numbers
+        
+        # Use a set to track the numbers present in the input list
+    input_set = set(inputs)
+
     sum_missing_odds = 0
     for i in range(min_value, max_value + 1):
-        if i % 2 != 0 and dynamic_array[i - min_value] == 0:
+        if i % 2 != 0 and i not in input_set:
             sum_missing_odds += i
-
     return sum_missing_odds
 
 def k_cool(k: int, n: int) -> int:
@@ -251,7 +236,6 @@ def number_game(numbers: list[int]) -> tuple[str, int]:
     else:
         return ("Tie", alice_score)
 
-
 def merge_sort(arr):
     if len(arr) > 1:
         mid = len(arr) // 2
@@ -297,17 +281,13 @@ def road_illumination(road_length: int, poles: list[int]) -> float:
     road_illumination(15, [15, 5, 3, 7, 9, 14, 0]) == 2.5
     road_illumination(5, [2, 5]) == 2.0
     """
-
     # YOUR CODE GOES HERE
     poles = merge_sort(poles)
-    
     # Step 2: Calculate the maximum gap between consecutive poles
     max_gap = 0
     for i in range(1, len(poles)):
         gap = poles[i] - poles[i - 1]
         max_gap = max(max_gap, gap)
-    
     # Step 3: Consider the ends of the road
     max_gap = max(max_gap / 2.0, poles[0], road_length - poles[-1])
-    
     return max_gap
