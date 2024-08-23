@@ -17,7 +17,6 @@ class DynamicArray:
         self._reversed = False  # Flag to indicate if the array is reversed
 
 
-        
 
     def __str__(self) -> str:
         """
@@ -46,7 +45,8 @@ class DynamicArray:
         Return None if index is out of bounds.
         Time complexity for full marks: O(1)
         """
-        if 0 <= index < self._size:
+        i=0
+        if i == index < self._size and i<index:
             if self._reversed:
                 return self._data[(self._start_index + self._size - 1 - index) % self._capacity]
             else:
